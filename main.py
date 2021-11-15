@@ -1,20 +1,41 @@
 board = [
-    [7,8,0,4,0,0,1,2,0],
-    [6,0,0,0,7,5,0,0,9],
-    [0,0,0,6,0,1,0,7,8],
-    [0,0,7,0,4,0,2,6,0],
-    [0,0,1,0,5,0,9,3,0],
-    [9,0,4,0,6,0,0,0,5],
-    [0,7,0,3,0,0,0,1,2],
-    [1,2,0,0,0,7,4,0,0],
-    [0,4,9,2,0,6,0,0,7]
+    [7, 8, 0, 4, 0, 0, 1, 2, 0],
+    [6, 0, 0, 0, 7, 5, 0, 0, 9],
+    [0, 0, 0, 6, 0, 1, 0, 7, 8],
+    [0, 0, 7, 0, 4, 0, 2, 6, 0],
+    [0, 0, 1, 0, 5, 0, 9, 3, 0],
+    [9, 0, 4, 0, 6, 0, 0, 0, 5],
+    [0, 7, 0, 3, 0, 0, 0, 1, 2],
+    [1, 2, 0, 0, 0, 7, 4, 0, 0],
+    [0, 4, 9, 2, 0, 6, 0, 0, 7]
 ]
+
+
+# Backtracking algorithm
+def solve(bo):
+    find = find_empty(bo)
+    if not find:
+        return True
+    else:
+        row, col = find
+
+    for i in range(1, 10):
+        if valid(bo, i, (row, col)):
+            bo[row][col] = i
+
+            if solve(bo):
+                return True
+
+            bo[row][col] = 0
+
+    return False
+
 
 # Check if the board is valid
 def valid(bo, num, pos):
     # Checking rows by looking at every column in a row
     for i in range(len(bo[0])):
-        if bo[pos[0][i] == num and pos[1]] != i:
+        if bo[pos[0]][i] == num and pos[1] != i:
             return False
 
     # Check columns by looking at every row in a column
@@ -33,6 +54,7 @@ def valid(bo, num, pos):
 
     return True
 
+
 # Print Board func.
 def print_board(bo):
     for i in range(len(bo)):
@@ -48,10 +70,17 @@ def print_board(bo):
             else:
                 print(str(bo[i][j]) + " ", end="")
 
+
 # Find empty cell func.
 def find_empty(bo):
     for i in range(len(bo)):
         for j in range(len(bo[0])):
             if bo[i][j] == 0:
-                print(i, j)
+                return (i, j)  # row, col
+    return None
 
+
+print_board(board)
+solve(board)
+print("\n------Solved one------")
+print_board(board)
